@@ -2,7 +2,6 @@
 #define SORTS_CPP
 
 #include "sorts.hpp"
-#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -162,5 +161,40 @@ void insertion_sort(T *array, const int &size, int (*criteria)(T, T))
         }
         array[j + 1] = tmp;
     }
+}
+
+template <typename T>
+void heapConstruct(T *ar, int index, int last, int (*criteria)(T, T))
+{
+    int left = index * 2 + 1;
+    int right = index * 2 + 2;
+    if (left > last)
+        return;
+    if (right > last)
+    {
+        if (criteria(ar[left], ar[index]) == 1)
+            swap(ar[left], ar[index]);
+    }
+    else
+    {
+        if (criteria(ar[index], ar[left]) >= 0 && criteria(ar[index], ar[right]) >= 0)
+            return;
+        if (ar[right] >= ar[left])
+            swap(ar[right], ar[index]);
+        else
+            swap(ar[left], ar[index]);
+    }
+}
+
+template <typename T>
+void heap_sort(T *ar, int size, int (*criteria)(T, T))
+{
+    if (size <= 1)
+        return;
+    int last = size - 1;
+    for (int i = last / 2; i >= 0; --i)
+        heapConstruct(ar, i, last, criteria);
+    swap(ar[last], ar[0]);
+    heap_sort(ar, size - 1, criteria);
 }
 #endif

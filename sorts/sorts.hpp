@@ -30,5 +30,8 @@ void merge_sort(T *array, const int &size, int (*criteria)(T, T));
 template <typename T>
 void insertion_sort(T *array, const int &size, int (*criteria)(T, T));
 
+template <typename T>
+void heap_sort(T *ar, int size, int (*criteria)(T, T));
+
 #include "sorts.cpp"
 #endif

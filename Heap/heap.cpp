@@ -1,33 +1,37 @@
-#include <iostream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-struct node
+void heapConstruct(int *ar, int index, int last)
 {
-    int key;
-    node *left, *right, *prev;
-    node() : left(0), right(0), prev(0){};
-};
-
-void swap(int &a, int &b)
-{
-    int t = a;
-    a = b;
-    b = a;
+    int left = index * 2 + 1;
+    int right = index * 2 + 2;
+    if (left > last)
+        return;
+    if (right > last)
+    {
+        if (ar[left] > ar[index])
+            swap(ar[left], ar[index]);
+    }
+    else
+    {
+        if (ar[index] >= ar[left] && ar[index] >= ar[right])
+            return;
+        if (ar[right] >= ar[left])
+            swap(ar[right], ar[index]);
+        else
+            swap(ar[left], ar[index]);
+    }
 }
 
-node *MaxHeap(int *ar, int n)
+void heap_sort(int *ar, int last)
 {
-    node *root = new node;
-    root->key = ar[0];
-    node *cur = root;
-    int nodes = 1;
-    node *newNode;
-    for (int i = 1; i < n; ++i)
-    {
-        newNode = new node;
-        newNode->key = ar[i];
-    }
+    if (last <= 0)
+        return;
+    for (int i = last / 2; i >= 0; --i)
+        heapConstruct(ar, i, last);
+    swap(ar[last], ar[0]);
+    heap_sort(ar, last - 1);
 }
 
 int main()
@@ -37,5 +41,9 @@ int main()
     int *ar = new int[n];
     for (int i = 0; i < n; ++i)
         cin >> ar[i];
+    heap_sort(ar, n - 1);
+    for (int i = 0; i < n; ++i)
+        cout << ar[i] << " ";
+    cout << endl;
     delete[] ar;
 }
