@@ -18,7 +18,7 @@ int main()
     int *ar = new int[n];
     for (int i = 0; i < n; ++i)
         cin >> ar[i];
-    heap_sort(ar, n, cond);
+    mo3_qsort(ar, n, cond);
     for (int i = 0; i < n; ++i)
         cout << ar[i] << " ";
     cout << endl;
