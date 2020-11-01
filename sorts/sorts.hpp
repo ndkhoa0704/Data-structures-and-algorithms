@@ -4,9 +4,6 @@
 #include <bits/stdc++.h>
 
 template <typename T>
-void Swap(T &a, T &b);
-
-template <typename T>
 void bubble_sort(T *array, const size_t &size, bool (*criteria)(T, T));
 
 template <typename T>
@@ -32,6 +29,18 @@ void insertion_sort(T *array, const int &size, int (*criteria)(T, T));
 
 template <typename T>
 void heap_sort(T *ar, int size, int (*criteria)(T, T));
+
+template <typename T>
+int sortMLR(T *ar, int left, int right, int (*criteria)(T, T));
+
+template <typename T>
+int partitionMO3(T *ar, int left, int right, int (*criteria)(T, T));
+
+template <typename T>
+void driverMO3_qsort(T *ar, int left, int right, int (*criteria)(T, T));
+
+template <typename T>
+void mo3_qsort(T *ar, int size, int (*criteria)(T, T));
 
 #include "sorts.cpp"
 #endif

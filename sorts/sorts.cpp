@@ -5,14 +5,7 @@
 
 using namespace std;
 
-template <typename T>
-void Swap(T &a, T &b)
-{
-    T tmp;
-    tmp = a;
-    a = b;
-    b = tmp;
-}
+// bubble sort
 
 template <typename T>
 void bubble_sort(T *array, const int &size, int (*criteria)(T, T))
@@ -25,12 +18,14 @@ void bubble_sort(T *array, const int &size, int (*criteria)(T, T))
         {
             if (criteria(array[i - 1], array[i]) == 1)
             {
-                Swap(array[i - 1], array[i]);
+                swap(array[i - 1], array[i]);
                 ++count;
             }
         }
     } while (count);
 }
+
+// selection sort
 
 template <typename T>
 void selection_sort(T *array, const int &size, int (*criteria)(T, T))
@@ -41,10 +36,12 @@ void selection_sort(T *array, const int &size, int (*criteria)(T, T))
         for (int j = i + 1; j < size; ++j)
         {
             if (criteria(array[i], array[j]) == 1)
-                Swap(array[i], array[j]);
+                swap(array[i], array[j]);
         }
     }
 }
+
+// quick sort (choose last element as pivot)
 
 template <typename T>
 int _partition_(T *array, const int &left, const int &right, int (*criteria)(T, T))
@@ -60,11 +57,11 @@ int _partition_(T *array, const int &left, const int &right, int (*criteria)(T, 
             --r;
         if (l >= r)
             break;
-        Swap(array[l], array[r]);
+        swap(array[l], array[r]);
         ++l;
         --r;
     }
-    Swap(array[l], array[right]);
+    swap(array[l], array[right]);
     return l;
 }
 
@@ -84,6 +81,8 @@ void quick_sort(T *array, const int &size, int (*criteria)(T, T))
 {
     driverQ(array, 0, size - 1, criteria);
 }
+
+// merge sort
 
 template <typename T>
 void _merge_(T *array, const int &left, const int &right, const int &mid, int (*criteria)(T, T))
@@ -145,6 +144,8 @@ void merge_sort(T *array, const int &size, int (*criteria)(T, T))
     driverM(array, 0, size - 1, criteria);
 }
 
+// insertion sort
+
 template <typename T>
 void insertion_sort(T *array, const int &size, int (*criteria)(T, T))
 {
@@ -162,6 +163,8 @@ void insertion_sort(T *array, const int &size, int (*criteria)(T, T))
         array[j + 1] = tmp;
     }
 }
+
+// heap sort
 
 template <typename T>
 void heapConstruct(T *ar, int index, int last, int (*criteria)(T, T))
@@ -197,4 +200,63 @@ void heap_sort(T *ar, int size, int (*criteria)(T, T))
     swap(ar[last], ar[0]);
     heap_sort(ar, size - 1, criteria);
 }
+
+// median of three quick sort
+
+template <typename T>
+int sortMLR(T *ar, int left, int right, int (*criteria)(T, T))
+{
+    int mid = left + (right - left) / 2;
+    if (criteria(ar[0], ar[mid]) == 1)
+        swap(ar[0], ar[mid]);
+    if (criteria(ar[mid], ar[right]) == 1)
+        swap(ar[mid], ar[right]);
+    if (criteria(ar[left], ar[right]) == 1)
+        swap(ar[0], ar[mid]);
+    return mid;
+}
+
+template <typename T>
+int partitionMO3(T *ar, int left, int right, int (*criteria)(T, T))
+{
+    int l = left + 1;
+    int r = right - 2;
+    int pivot_i = sortMLR(ar, left, right, criteria);
+    T pivot_v = ar[pivot_i];
+    swap(ar[pivot_i], ar[right - 1]);
+    while (1)
+    {
+        while (l <= r && criteria(ar[l], pivot_v) != 1) //<
+            ++l;
+        while (l <= r && criteria(ar[r], pivot_v) != -1) //>
+            --r;
+        if (l >= r)
+            break;
+        swap(ar[l], ar[r]);
+        ++l;
+        --r;
+    }
+    swap(ar[l], ar[right - 1]);
+    return l;
+}
+
+template <typename T>
+void driverMO3_qsort(T *ar, int left, int right, int (*criteria)(T, T))
+{
+    if (right - left + 1 < 3)
+    {
+        insertion_sort(ar, right - left, criteria);
+        return;
+    }
+    int pivot = partitionMO3(ar, left, right, criteria);
+    driverMO3_qsort(ar, left, pivot - 1, criteria);
+    driverMO3_qsort(ar, pivot + 1, right, criteria);
+}
+
+template <typename T>
+void mo3_qsort(T *ar, int size, int (*criteria)(T, T))
+{
+    driverMO3_qsort(ar, 0, size - 1, criteria);
+}
+
 #endif
