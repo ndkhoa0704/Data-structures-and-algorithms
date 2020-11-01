@@ -1,4 +1,4 @@
 # Data-structures-and-algorithms
-School lectures
+School lecture
 
 **Used for research**
