@@ -207,12 +207,12 @@ template <typename T>
 int sortMLR(T *ar, int left, int right, int (*criteria)(T, T))
 {
     int mid = left + (right - left) / 2;
-    if (criteria(ar[0], ar[mid]) == 1)
-        swap(ar[0], ar[mid]);
+    if (criteria(ar[left], ar[mid]) == 1)
+        swap(ar[left], ar[mid]);
     if (criteria(ar[mid], ar[right]) == 1)
         swap(ar[mid], ar[right]);
-    if (criteria(ar[left], ar[right]) == 1)
-        swap(ar[0], ar[mid]);
+    if (criteria(ar[left], ar[mid]) == 1)
+        swap(ar[left], ar[mid]);
     return mid;
 }
 
@@ -245,7 +245,7 @@ void driverMO3_qsort(T *ar, int left, int right, int (*criteria)(T, T))
 {
     if (right - left + 1 < 3)
     {
-        insertion_sort(ar, right - left, criteria);
+        heap_sort(ar, 2, criteria);
         return;
     }
     int pivot = partitionMO3(ar, left, right, criteria);
@@ -257,6 +257,43 @@ template <typename T>
 void mo3_qsort(T *ar, int size, int (*criteria)(T, T))
 {
     driverMO3_qsort(ar, 0, size - 1, criteria);
+}
+
+// binary insertion sort
+template <typename T>
+int binary_search(T *ar, T key, int left, int right, int (*criteria)(T, T))
+{
+    if (right <= left)
+    {
+        if (key > ar[left])
+            return left + 1;
+        return left;
+    }
+    int mid = (right + left) / 2;
+    if (criteria(ar[mid], key) == 1)
+        return binary_search(ar, key, left, mid - 1, criteria);
+    else if (criteria(ar[mid], key) == -1)
+        return binary_search(ar, key, mid + 1, right, criteria);
+    else
+        return mid + 1;
+}
+template <typename T>
+void binary_insertion_sort(T *ar, int size, int (*criteria)(T, T))
+{
+    int loc, j;
+    T sel;
+    for (int i = 1; i < size; ++i)
+    {
+        j = i - 1;
+        sel = ar[i];
+        loc = binary_search(ar, sel, 0, j, criteria);
+        while (j >= loc)
+        {
+            ar[j + 1] = ar[j];
+            --j;
+        }
+        ar[j + 1] = sel;
+    }
 }
 
 #endif

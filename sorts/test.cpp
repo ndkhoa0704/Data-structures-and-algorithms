@@ -18,7 +18,7 @@ int main()
     int *ar = new int[n];
     for (int i = 0; i < n; ++i)
         cin >> ar[i];
-    mo3_qsort(ar, n, cond);
+    binary_insertion_sort(ar, n, cond);
     for (int i = 0; i < n; ++i)
         cout << ar[i] << " ";
     cout << endl;
